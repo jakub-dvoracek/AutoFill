@@ -3,8 +3,10 @@ To load AutoFill at a website include this file into the html head or run this s
  var element = document.createElement("script");
  element.src = "<url of this file>";
  document.body.appendChild(element);
+ 
+jQuery library has to be loaded first!
 
-Then append GET parameter named "autofill" to the url
+To activate AutoFill feature append GET parameter named "autofill" to the url
 For example: http://www.example.com/?autofill
 
 Don´t forget to fill default values to the AF.defaults array!
