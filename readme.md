@@ -6,6 +6,7 @@ To load AutoFill on a page include this file into html head or run this three li
  document.body.appendChild(element);
 
 Then append GET parameter named "autofill" to the url
+
 For example: http://www.example.com/?autofill
 
 Don´t forget to fill default values to the AF.defaults array!
