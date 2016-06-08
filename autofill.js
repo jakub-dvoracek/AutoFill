@@ -1,19 +1,26 @@
 /**
-To load AutoFill at a website include this file into the html head or run this script in console:
- var element = document.createElement("script");
- element.src = "<url of this file>";
- document.body.appendChild(element);
+
+To activate AutoFill feature:
+
+  For onetime use, run this script in console:
+	 var element = document.createElement("script");
+	 element.src = "http://allstar.cz/ext/js/autofill/jquery-1.11.1.min.js";
+	 document.body.appendChild(element);
+	 var element = document.createElement("script");
+	 element.src = "http://allstar.cz/ext/js/autofill/autofill.js";
+	 document.body.appendChild(element);
+	 
+ For permanent availability, include this calls into your html head ():
+	<script src="http://allstar.cz/ext/js/autofill/jquery-1.11.1.min.js"></script> (if jQuery wasn´t loaded previously)
+	<script src="http://allstar.cz/ext/js/autofill/autofill.js"></script>
+  
+ In both cases, append GET parameter named "autofill" to the url (For example: http://www.example.com/?autofill)
  
-jQuery library has to be loaded first!
-
-To activate AutoFill feature append GET parameter named "autofill" to the url
-For example: http://www.example.com/?autofill
-
-Don´t forget to fill default values to the AF.defaults array!
-
 USAGE:
  - click on any element of a form you want to autofill
- - click the Fill button on left bottom corner
+ - click the Fill button on right-top corner
+ 
+ @author <jakubd@allstar.cz>
  
 */
 
@@ -21,27 +28,58 @@ var AF_previousFocusedElement;
 var AF_currentlyFocusedElement;
 var AF = new AutoFill();
 
-alert('AF loaded');
-
 // Fill your default values here
 AF.defaults = {
-	'email': 'mymail@example.com',
-	'phone': '777 888 999',
-	'username': 'jakubd-cz',
-	'password': 'mojeheslo',
+	'email': 'jakubd@allstar.cz',
+	'phone': '778 716 180',
+	'username': 'muj_uzivatel',
+	'password': 'moje_heslo',
 	'firstname': 'Jakub',
 	'lastname': 'Dvořáček',
-	'street': 'Uliční 83',
+	'street': 'Novákových 20a',
 	'city': 'Praha',
 	'zip': '18000',
 	'country': 'Česká republika',
-	'generic': 'abc123'
+	'number': '2',
+	'ic': '12345678',
+	'dic': 'CZ123456789',
+	'generic': 'testovací data',
+	'date': function() {
+		
+		// Try to recognize page language
+		var metaLanguage = $('meta[http-equiv="Content-Language"]');
+		if (metaLanguage.length > 0)
+			var lang = $(metaLanguage).attr('content')
+		else if ($('html').attr('lang') !== 'undefined') 
+			var lang = $('html').attr('lang')
+			
+		else if($('html').attr('xml:lang') !== 'undefined') {
+			var lang = $('html').attr('lang');
+			var lang = lang.substring(0, 1);
+		}		
+		if(lang.length > 2)
+			var lang = lang.substring(0, 2);
+			
+		var today = new Date();
+		var dd    = today.getDate();
+		var mm    = today.getMonth() + 1;
+		var yyyy  = today.getFullYear();
+		
+		
+		// see http://en.wikipedia.org/wiki/Date_format_by_country
+		if(lang == 'cs')
+			var date = dd +'.'+ mm +'.'+ yyyy;
+		else
+			var date = yyyy +'-'+ mm +'-'+ dd;
+						
+		return date;
+	}	
 }
 
 $(document).ready(function() {
 	
 	if(new RegExp('[\\?&](autofill)').exec(window.location.href)) {
-		var AF_controlBarr = '<div style="position:absolute;left:0;bottom:0;border:1px solid black;background-color:#C9CCBD;padding:5px">AutoFill <input type="button" name="AF_formFillButton" id="AF_formFillButton" value="Fill"></div>';		
+		var AF_controlBarr = '<div style="position:fixed;right:0;top:0;border:2px solid #768C48;background-color:#CEF680;padding:5px;font-weight:bold-webkit-box-shadow:-3px 3px 8px 0px rgba(50,50,50,0.75);-moz-box-shadow:-3px 3px 8px 0px rgba(50,50,50,0.75);box-shadow:-3px 3px 8px 0px rgba(50,50,50,0.75);">AutoFill <input type="button" name="AF_formFillButton" id="AF_formFillButton" value="Fill"></div>';		
 		$('body').append(AF_controlBarr);		
 	}
 	
@@ -103,7 +141,7 @@ function AutoFill() {
 		}
 		
 		// phone
-		else if(new RegExp('(phone|telef)').exec(emtName)) {
+		else if(new RegExp('(phone|cellphone|telefon|mobil|mobilni_cislo|telefoni_cislo)').exec(emtName)) {
 			return 'phone';
 		}
 				
@@ -142,9 +180,29 @@ function AutoFill() {
 			return 'country';
 		}
 		
+		// number
+		else if(new RegExp('(num|count|qty|quantity|zahl|menge|quant)').exec(emtName)) {
+			return 'number';
+		}
+		
 		// password
 		else if(new RegExp('(passwor|heslo)').exec(emtName)) {
 			return 'country';
+		}
+		
+		// date
+		if(new RegExp('(date|datum|data)').exec(emtName)) {
+			return 'date';
+		}
+		
+		// dic
+		if(new RegExp('(dic|danove_identifikacni_cislo)').exec(emtName)) {
+			return 'dic';
+		}
+		
+		// ic
+		if(new RegExp('(ic|ico|identifikacni_cislo)').exec(emtName)) {
+			return 'ic';
 		}
 		
 		else
