@@ -30,20 +30,20 @@ var AF = new AutoFill();
 
 // Fill your default values here
 AF.defaults = {
-	'email': 'jakubd@allstar.cz',
-	'phone': '778 716 180',
-	'username': 'muj_uzivatel',
-	'password': 'moje_heslo',
-	'firstname': 'Jakub',
-	'lastname': 'Dvořáček',
-	'street': 'Novákových 20a',
-	'city': 'Praha',
+	'email': 'my@email.com',
+	'phone': '777 888 999',
+	'username': 'my_user',
+	'password': 'my_password',
+	'firstname': 'Firstname',
+	'lastname': 'Lastname',
+	'street': 'Street 23',
+	'city': 'Prague',
 	'zip': '18000',
-	'country': 'Česká republika',
+	'country': 'Czech republic',
 	'number': '2',
 	'ic': '12345678',
 	'dic': 'CZ123456789',
-	'generic': 'testovací data',
+	'generic': 'test data...',
 	'date': function() {
 		
 		// Try to recognize page language
