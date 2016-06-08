@@ -137,12 +137,12 @@ function AutoFill() {
 		}
 		
 		// username
-		else if(new RegExp('(username|login|nick)').exec(emtName)) {
+		else if(new RegExp('(username|^login|^nick)').exec(emtName)) {
 			return 'username';
 		}
 		
 		// (first)name
-		else if(new RegExp('(name|meno)').exec(emtName)) {
+		else if(new RegExp('(^name|^meno|^jmeno|krestni_jmeno|firstname)').exec(emtName)) {
 			return 'firstname';
 		}
 		
@@ -162,12 +162,12 @@ function AutoFill() {
 		}
 		
 		// country
-		else if(new RegExp('(country|zeme|staat|stat)').exec(emtName)) {
+		else if(new RegExp('(country|zeme|^staat|^stat)').exec(emtName)) {
 			return 'country';
 		}
 		
 		// number
-		else if(new RegExp('(num|count|qty|quantity|zahl|menge|quant)').exec(emtName)) {
+		else if(new RegExp('(^num|count|qty|quantity|^zahl|^menge|^quant)').exec(emtName)) {
 			return 'number';
 		}
 		
@@ -177,24 +177,22 @@ function AutoFill() {
 		}
 		
 		// date
-		if(new RegExp('(date|datum|data)').exec(emtName)) {
+		if(new RegExp('(^date|datum|^data)').exec(emtName)) {
 			return 'date';
 		}
 		
 		// dic
-		if(new RegExp('(dic|danove_identifikacni_cislo)').exec(emtName)) {
+		if(new RegExp('(^dic|danove_identifikacni_cislo)').exec(emtName)) {
 			return 'dic';
 		}
 		
 		// ic
-		if(new RegExp('(ic|ico|identifikacni_cislo)').exec(emtName)) {
+		if(new RegExp('(^ic|^ico|identifikacni_cislo)').exec(emtName)) {
 			return 'ic';
 		}
 		
-		
-		
-		else
-			return 'generic';		
+		else {
+			return 'generic';
+		}
 	}
 }
-
